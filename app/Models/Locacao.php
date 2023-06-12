@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Agendamento extends Model
+class Locacao extends Model
 {
     use HasFactory;
 
@@ -20,10 +19,9 @@ class Agendamento extends Model
         'data_retorno',
         'hora_retorno',
         'qtd_diarias',
-        'valor_total',
+        'km_saida',
         'valor_desconto',
-        'valor_pago',
-        'valor_restante',
+        'valor_total',
         'obs',
         'status',
     ];
@@ -38,3 +36,5 @@ class Agendamento extends Model
         return $this->belongsTo(Veiculo::class);
     }
 }
+
+
