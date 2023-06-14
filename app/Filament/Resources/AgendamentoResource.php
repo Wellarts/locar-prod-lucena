@@ -7,6 +7,7 @@ use App\Filament\Resources\AgendamentoResource\RelationManagers;
 use App\Models\Agendamento;
 use App\Models\Cliente;
 use App\Models\Veiculo;
+use Carbon\Carbon;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
@@ -20,6 +21,8 @@ use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Nette\Utils\Callback;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
+use Stevebauman\Purify\Facades\Purify;
 
 class AgendamentoResource extends Resource
 {
@@ -35,15 +38,27 @@ class AgendamentoResource extends Resource
                     ->schema([
                         Fieldset::make('Dados do Agendamento')
                             ->schema([
-                                Forms\Components\Select::make('cliente_id')
+                            Forms\Components\Select::make('cliente_id')
                                 ->label('Cliente')
                                 ->required()
                                 ->options(Cliente::all()->pluck('nome', 'id')->toArray()),
                             Forms\Components\Select::make('veiculo_id')
                                 ->label('Veículo')
                                 ->required()
-                                ->getSearchResultsUsing(fn (string $search) => Veiculo::where('modelo', 'placa', "%{$search}%")->limit(50)->pluck('modelo', 'id'))
-                                ->getOptionLabelUsing(fn ($value): ?string => Veiculo::find($value)?->modelo),
+                                ->allowHtml()
+                                ->searchable()
+                                ->getSearchResultsUsing(function (string $search) {
+                                    $veiculos = Veiculo::where('modelo', 'like', "%{$search}%")->limit(50)->get();
+                             
+                                    return $veiculos->mapWithKeys(function ($veiculos) {
+                                          return [$veiculos->getKey() => static::getCleanOptionString($veiculos)];
+                                         })->toArray();
+                                })
+                               ->getOptionLabelUsing(function ($value): string {
+                                   $veiculo = Veiculo::find($value);
+                             
+                                   return static::getCleanOptionString($veiculo);
+                               }),
                               //  ->options(Veiculo::all()->pluck('modelo', 'id')->toArray()),
                             Forms\Components\DatePicker::make('data_saida')
                                 ->label('Data Saída')
@@ -54,8 +69,16 @@ class AgendamentoResource extends Resource
                                 ->required(),
                             Forms\Components\DatePicker::make('data_retorno')
                                 ->label('Data Retorno')
-                                ->afterStateUpdated( function($state, Callback $set, Closure $get) {
-                                        
+                                ->reactive()
+                                ->afterStateUpdated(function ($state, callable $set, Closure $get) {
+                                    $dt_saida = Carbon::parse($get('data_saida'));
+                                    $dt_retorno = Carbon::parse($get('data_retorno'));
+                                    $qtd_dias = $dt_retorno->diffInDays($dt_saida);
+                                    $set('qtd_diarias', $qtd_dias);
+                                  
+                                    $carro = Veiculo::find($get('veiculo_id'));
+                                    $set('valor_total', ($carro->valor_diaria * $qtd_dias));
+                             
                                 })
                                 ->required(),
                             Forms\Components\TimePicker::make('hora_retorno')
@@ -65,23 +88,25 @@ class AgendamentoResource extends Resource
                         Fieldset::make('Valores')
                             ->schema([    
                                 Forms\Components\TextInput::make('qtd_diarias')
-                                ->label('Qtd Diárias')
-                                ->required(),
-                                Forms\Components\TextInput::make('valor_desconto')
-                                    ->label('Valor Desconto'),                                    
+                                    ->disabled()
+                                    ->label('Qtd Diárias')
+                                    ->required(),
                                 Forms\Components\TextInput::make('valor_total')
-                                    
-                                    ->label('valor Total')
+                                    ->disabled()
+                                    ->label('Valor Total')
                                     ->required(),    
                                 Forms\Components\TextInput::make('valor_desconto')
-                                    
-                                    ->label('Valor Desconto')
-                                    ->required(),
+                                    ->label('Valor Desconto'),                                    
                                 Forms\Components\TextInput::make('valor_pago')
-                                    
-                                    ->label('Valor Pago'),
+                                    ->label('Valor Pago')
+                                    ->reactive()
+                                    ->afterStateUpdated(function ($state, callable $set, Closure $get,) {
+                                        $set('valor_restante', (((float)$get('valor_total') - (float)$get('valor_desconto')) - (float)$get('valor_pago')));
+                                        
+                                    }),
+                                       
                                 Forms\Components\TextInput::make('valor_restante')
-                                    
+                                    ->disabled()
                                     ->label('Valor Restante')
                                     ->required(),
                                 Forms\Components\Textarea::make('obs')
@@ -102,6 +127,8 @@ class AgendamentoResource extends Resource
                     ->label('Cliente'),
                 Tables\Columns\TextColumn::make('veiculo.modelo')
                      ->label('Veículo'),
+                Tables\Columns\TextColumn::make('veiculo.placa')
+                     ->label('Placa'),
                 Tables\Columns\TextColumn::make('data_saida')
                     ->label('Data Saída')
                     ->date(),
@@ -161,5 +188,15 @@ class AgendamentoResource extends Resource
             'create' => Pages\CreateAgendamento::route('/create'),
             'edit' => Pages\EditAgendamento::route('/{record}/edit'),
         ];
-    }    
+    } 
+    
+    public static function getCleanOptionString(Veiculo $veiculo): string
+    {
+        return Purify::clean(
+                view('filament.componentes.modelo-placa')
+                    ->with('modelo', $veiculo?->modelo)
+                    ->with('placa', $veiculo?->placa)
+                    ->render()
+        );
+    }
 }

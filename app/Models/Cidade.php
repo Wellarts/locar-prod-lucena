@@ -25,8 +25,8 @@ class Cidade extends Model
     public function Cliente() {
         return $this->hasMany(Cliente::class);
     }
-/*
+
     public function fornecedor() {
         return $this->hasMany(Fornecedor::class);
-    } */
+    } 
 }

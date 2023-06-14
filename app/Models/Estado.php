@@ -29,10 +29,10 @@ class Estado extends Model
         return $this->hasMany(Cliente::class);
     }
 
-  /*  public function fornecedor() {
+    public function fornecedor() {
         return $this->hasMany(Fornecedor::class);
     }
-
+/*
     public function funcionario() {
         return $this->hasMany(Funcionario::class);
     }

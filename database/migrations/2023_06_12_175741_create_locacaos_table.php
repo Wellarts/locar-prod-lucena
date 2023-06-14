@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('qtd_diarias');
             $table->decimal('valor_desconto',10,2);
             $table->decimal('valor_total',10,2);
+            $table->decimal('valor_total_desconto',10,2);
             $table->longText('obs');
             $table->boolean('status');
             $table->timestamps();

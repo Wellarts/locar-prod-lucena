@@ -22,6 +22,7 @@ class Locacao extends Model
         'km_saida',
         'valor_desconto',
         'valor_total',
+        'valor_total_desconto',
         'obs',
         'status',
     ];

@@ -16,7 +16,7 @@ class Veiculo extends Model
         'placa',
         'cor',
         'km_atual',
-        'valor_diaria',10,2,
+        'valor_diaria',
         'prox_troca_oleo',
         'prox_troca_filtro',
         'aviso_troca_oleo',
@@ -38,5 +38,10 @@ class Veiculo extends Model
     public function Agendamento()
     {
         return $this->hasMany(Agendamento::class);
+    }
+
+    public function CustoVeiculo()
+    {
+        return $this->hasMany(CustoVeiculo::class);
     }
 }
