@@ -17,7 +17,9 @@ class MarcaResource extends Resource
 {
     protected static ?string $model = Marca::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroup = 'Cadastros';
+
+    protected static ?string $navigationIcon = 'heroicon-o-template';
 
     public static function form(Form $form): Form
     {
@@ -39,7 +41,8 @@ class MarcaResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->modalHeading('Editar Marca'),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

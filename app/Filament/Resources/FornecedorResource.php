@@ -19,7 +19,11 @@ class FornecedorResource extends Resource
 {
     protected static ?string $model = Fornecedor::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroup = 'Cadastros';
+
+    protected static ?string $navigationIcon = 'heroicon-s-user-add';
+
+    protected static ?string $navigationLabel = 'Fornecedores';
 
     public static function form(Form $form): Form
     {
@@ -89,7 +93,8 @@ class FornecedorResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->modalHeading('Editar Fornecedor'),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

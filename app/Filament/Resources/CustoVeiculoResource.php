@@ -12,6 +12,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Stevebauman\Purify\Facades\Purify;
@@ -86,10 +87,28 @@ class CustoVeiculoResource extends Resource
                     ->dateTime(),
             ])
             ->filters([
-                //
+                SelectFilter::make('veiculo')->relationship('veiculo', 'placa'),
+               
+                SelectFilter::make('fornecedor')->relationship('fornecedor', 'nome'),
+              
+                Tables\Filters\Filter::make('data')
+                    ->form([
+                        Forms\Components\DatePicker::make('data_de')
+                            ->label('De:'),
+                        Forms\Components\DatePicker::make('data_ate')
+                            ->label('Até:'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['data_de'],
+                                fn($query) => $query->whereDate('data', '>=', $data['data_de']))
+                            ->when($data['data_ate'],
+                                fn($query) => $query->whereDate('data', '<=', $data['data_ate']));
+                    })
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->modalHeading('Editar Custo Veículo'),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

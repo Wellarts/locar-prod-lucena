@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\LocacaoResource\Pages;
 use App\Filament\Resources\LocacaoResource\RelationManagers;
+use App\Filament\Resources\LocacaoResource\RelationManagers\OcorrenciaLocacaoRelationManager;
 use App\Models\Cliente;
 use App\Models\Locacao;
 use App\Models\Veiculo;
@@ -16,6 +17,8 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Stevebauman\Purify\Facades\Purify;
@@ -24,7 +27,13 @@ class LocacaoResource extends Resource
 {
     protected static ?string $model = Locacao::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroup = 'Locar';
+
+    protected static ?string $navigationIcon = 'heroicon-s-currency-dollar';
+
+    protected static ?string $navigationLabel = 'Locações';
+
+
 
     public static function form(Form $form): Form
     {
@@ -122,15 +131,21 @@ class LocacaoResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('cliente.nome')
+                    ->sortable()
+                    ->searchable()
                     ->label('Cliente'),
                 Tables\Columns\TextColumn::make('veiculo.modelo')
-                     ->label('Veículo'),
+                    ->sortable()
+                    ->searchable()
+                    ->label('Veículo'),
                 Tables\Columns\TextColumn::make('veiculo.placa')
+                    ->searchable()
                      ->label('Placa'),
                 Tables\Columns\TextColumn::make('data_saida')
                     ->label('Data Saída')
                     ->date(),
                 Tables\Columns\TextColumn::make('hora_saida')
+                    ->sortable()
                     ->label('Hora Saída'),
                 Tables\Columns\TextColumn::make('data_retorno')
                     ->label('Data Retorno')
@@ -148,18 +163,37 @@ class LocacaoResource extends Resource
                 Tables\Columns\TextColumn::make('valor_total_desconto')
                     ->money('BRL')
                     ->label('Valor Total com Desconto'),
-                Tables\Columns\IconColumn::make('status')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\ToggleColumn::make('status')
+                    ->label('Finalizada')
+                    ->sortable(),
+               Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime(),
             ])
             ->filters([
-                //
+                Filter::make('locados')
+                ->query(fn (Builder $query): Builder => $query->where('status', false)),
+                 SelectFilter::make('cliente')->relationship('cliente', 'nome'),
+                 SelectFilter::make('veiculo')->relationship('veiculo', 'placa'),
+                 Tables\Filters\Filter::make('datas')
+                    ->form([
+                        Forms\Components\DatePicker::make('data_saida_de')
+                            ->label('Saída de:'),
+                        Forms\Components\DatePicker::make('data_retorno_ate')
+                            ->label('Retorno até:'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['data_saida_de'],
+                                fn($query) => $query->whereDate('data_saida', '>=', $data['data_saida_de']))
+                            ->when($data['data_retorno_ate'],
+                                fn($query) => $query->whereDate('data_retorno', '<=', $data['data_retorno_ate']));
+                    })
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->modalHeading('Editar Locação'),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -169,7 +203,7 @@ class LocacaoResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            OcorrenciaLocacaoRelationManager::class
         ];
     }
     

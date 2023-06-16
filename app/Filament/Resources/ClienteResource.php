@@ -20,7 +20,9 @@ class ClienteResource extends Resource
 {
     protected static ?string $model = Cliente::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroup = 'Cadastros';
+
+    protected static ?string $navigationIcon = 'heroicon-s-user-add';
 
     public static function form(Form $form): Form
     {
@@ -119,7 +121,8 @@ class ClienteResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->modalHeading('Editar Cliente'),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

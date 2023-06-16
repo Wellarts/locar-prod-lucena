@@ -17,6 +17,8 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -28,7 +30,10 @@ class AgendamentoResource extends Resource
 {
     protected static ?string $model = Agendamento::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroup = 'Locar';
+
+    protected static ?string $navigationIcon = 'heroicon-s-currency-dollar';
+
 
     public static function form(Form $form): Form
     {
@@ -124,15 +129,21 @@ class AgendamentoResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('cliente.nome')
+                    ->sortable()
+                    ->searchable()
                     ->label('Cliente'),
                 Tables\Columns\TextColumn::make('veiculo.modelo')
-                     ->label('Veículo'),
+                    ->sortable()
+                    ->searchable()
+                    ->label('Veículo'),
                 Tables\Columns\TextColumn::make('veiculo.placa')
+                    ->searchable()
                      ->label('Placa'),
                 Tables\Columns\TextColumn::make('data_saida')
                     ->label('Data Saída')
                     ->date(),
                 Tables\Columns\TextColumn::make('hora_saida')
+                    ->sortable()
                     ->label('Hora Saída'),
                 Tables\Columns\TextColumn::make('data_retorno')
                     ->label('Data Retorno')
@@ -155,19 +166,36 @@ class AgendamentoResource extends Resource
                     ->money('BRL'),
                 Tables\Columns\TextColumn::make('obs')
                     ->label('Observações'),
-                Tables\Columns\IconColumn::make('status')
-                    ->label('Status')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('status')
+                    ->label('Finalizar'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime(),
             ])
             ->filters([
-                //
+                Filter::make('agendados')
+                ->query(fn (Builder $query): Builder => $query->where('status', false)),
+                 SelectFilter::make('cliente')->relationship('cliente', 'nome'),
+                 SelectFilter::make('veiculo')->relationship('veiculo', 'placa'),
+                 Tables\Filters\Filter::make('datas')
+                    ->form([
+                        Forms\Components\DatePicker::make('data_saida_de')
+                            ->label('Saída de:'),
+                        Forms\Components\DatePicker::make('data_retorno_ate')
+                            ->label('Retorno até:'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['data_saida_de'],
+                                fn($query) => $query->whereDate('data_saida', '>=', $data['data_saida_de']))
+                            ->when($data['data_retorno_ate'],
+                                fn($query) => $query->whereDate('data_retorno', '<=', $data['data_retorno_ate']));
+                    })
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->modalHeading('Editar Agendamento'),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

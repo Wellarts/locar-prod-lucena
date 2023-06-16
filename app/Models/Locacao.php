@@ -36,6 +36,11 @@ class Locacao extends Model
     {
         return $this->belongsTo(Veiculo::class);
     }
+
+    public function OcorrenciaLocacao()
+    {
+        return $this->hasMany(ocorrenciaLocacao::class);
+    }
 }
 
 

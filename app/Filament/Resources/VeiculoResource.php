@@ -19,7 +19,11 @@ class VeiculoResource extends Resource
 {
     protected static ?string $model = Veiculo::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroup = 'Cadastros';
+
+    protected static ?string $navigationIcon = 'heroicon-o-truck';
+
+    protected static ?string $navigationLabel = 'Veículos';
 
     public static function form(Form $form): Form
     {
@@ -100,7 +104,8 @@ class VeiculoResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->modalHeading('Editar Veículo'),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

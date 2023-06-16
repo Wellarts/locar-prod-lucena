@@ -10,10 +10,13 @@ class ManageFornecedors extends ManageRecords
 {
     protected static string $resource = FornecedorResource::class;
 
+    protected static ?string $title = 'Fornecedores';
+
     protected function getActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Criar Fornecedor'),
         ];
     }
 }

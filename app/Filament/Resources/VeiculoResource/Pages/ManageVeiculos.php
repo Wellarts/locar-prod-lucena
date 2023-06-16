@@ -10,10 +10,13 @@ class ManageVeiculos extends ManageRecords
 {
     protected static string $resource = VeiculoResource::class;
 
+    protected static ?string $title = 'Veículos';
+
     protected function getActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Criar Veículo'),
         ];
     }
 }
