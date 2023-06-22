@@ -8,6 +8,7 @@ use App\Models\CustoVeiculo;
 use App\Models\Fornecedor;
 use App\Models\Veiculo;
 use Filament\Forms;
+use Filament\Notifications\Notification;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -22,6 +23,11 @@ class CustoVeiculoResource extends Resource
     protected static ?string $model = CustoVeiculo::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
+
+    protected static ?string $navigationLabel = 'Custos dos Veículos';
+
+    protected static ?string $navigationGroup = 'Manutenção';
+
 
     public static function form(Form $form): Form
     {
@@ -108,8 +114,17 @@ class CustoVeiculoResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->modalHeading('Editar Custo Veículo'),
+                    ->modalHeading('Editar Custo Veículo')
+                    ->before(function ($data)
+                        {
+                        $veiculo = Veiculo::find($data['veiculo_id']);
+                        $veiculo->km_atual = $data['km_atual'];
+                        $veiculo->save();
+                    }), 
+                    
                 Tables\Actions\DeleteAction::make(),
+                 
+    
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -132,4 +147,17 @@ class CustoVeiculoResource extends Resource
                     ->render()
         );
     }
+
+    public function save(): void
+    {
+        // ...
+ 
+        Notification::make() 
+            ->title('Teste')
+            ->success()
+            ->send(); 
+    } 
+
+    
+
 }

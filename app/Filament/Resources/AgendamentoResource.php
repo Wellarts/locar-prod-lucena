@@ -103,6 +103,7 @@ class AgendamentoResource extends Resource
                                 Forms\Components\TextInput::make('valor_desconto')
                                     ->label('Valor Desconto'),                                    
                                 Forms\Components\TextInput::make('valor_pago')
+                                    ->required()
                                     ->label('Valor Pago')
                                     ->reactive()
                                     ->afterStateUpdated(function ($state, callable $set, Closure $get,) {
@@ -167,7 +168,7 @@ class AgendamentoResource extends Resource
                 Tables\Columns\TextColumn::make('obs')
                     ->label('Observações'),
                 Tables\Columns\ToggleColumn::make('status')
-                    ->label('Finalizar'),
+                    ->label('Finalizado'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
@@ -195,7 +196,7 @@ class AgendamentoResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->modalHeading('Editar Agendamento'),
+                    ->modalHeading('Editar Agendamento')
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

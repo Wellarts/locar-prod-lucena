@@ -16,6 +16,10 @@ class OcorrenciaLocacaoRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'locacao_id';
 
+    protected static ?string $title = 'Ocorrências da Locação';  
+
+    
+
     public static function form(Form $form): Form
     {
         return $form
@@ -61,10 +65,13 @@ class OcorrenciaLocacaoRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->label('Adicionar'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
+                 
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

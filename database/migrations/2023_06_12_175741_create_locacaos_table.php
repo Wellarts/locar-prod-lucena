@@ -19,6 +19,8 @@ return new class extends Migration
             $table->time('hora_saida');
             $table->date('data_retorno');
             $table->time('hora_retorno');
+            $table->integer('km_saida');
+            $table->integer('km_retorno');
             $table->integer('qtd_diarias');
             $table->decimal('valor_desconto',10,2);
             $table->decimal('valor_total',10,2);

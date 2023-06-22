@@ -20,6 +20,7 @@ class Locacao extends Model
         'hora_retorno',
         'qtd_diarias',
         'km_saida',
+        'km_retorno',
         'valor_desconto',
         'valor_total',
         'valor_total_desconto',

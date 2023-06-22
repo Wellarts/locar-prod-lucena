@@ -8,6 +8,7 @@ use App\Models\Marca;
 use App\Models\Veiculo;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
+use Filament\Notifications\Notification;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -90,7 +91,21 @@ class VeiculoResource extends Resource
                 Tables\Columns\TextColumn::make('ano'),
                 Tables\Columns\TextColumn::make('placa'),
                 Tables\Columns\TextColumn::make('cor'),
-                Tables\Columns\TextColumn::make('km_atual'),
+                Tables\Columns\TextColumn::make('km_atual')
+                ->getStateUsing(function (Veiculo $record): void {
+                  
+                  //  dd($record->km_atual);
+                   
+                    if($record->km_atual >= $record->aviso_troca_oleo){
+                        Notification::make()
+                        ->title('ATENÇÃO: Veículos com troca de óleo próxima')
+                        ->body('Veiculo: '.$record->modelo.' Placa: '.$record->placa) 
+                        ->warning()
+                        ->persistent() 
+                        ->send();
+                    };
+
+                }),
                 Tables\Columns\TextColumn::make('valor_diaria')
                   ->money('BRL'),
                 Tables\Columns\IconColumn::make('status')

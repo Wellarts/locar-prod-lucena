@@ -43,6 +43,7 @@ class MarcaResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->modalHeading('Editar Marca'),
+                    
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

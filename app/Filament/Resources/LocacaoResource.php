@@ -20,7 +20,6 @@ use Filament\Tables;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Stevebauman\Purify\Facades\Purify;
 
 class LocacaoResource extends Resource
@@ -33,8 +32,7 @@ class LocacaoResource extends Resource
 
     protected static ?string $navigationLabel = 'Locações';
 
-
-
+   
     public static function form(Form $form): Form
     {
         return $form
@@ -90,6 +88,9 @@ class LocacaoResource extends Resource
                                 Forms\Components\TextInput::make('km_saida')
                                     ->label('Km Saída')
                                     ->required(),
+                                Forms\Components\TextInput::make('km_retorno')
+                                    ->label('Km Retorno'),
+                                    
                             ]),
                         Fieldset::make('Valores')
                             ->schema([    
@@ -152,6 +153,13 @@ class LocacaoResource extends Resource
                     ->date(),
                 Tables\Columns\TextColumn::make('hora_retorno')
                     ->label('Hora Retorno'),
+                Tables\Columns\TextColumn::make('Km_Percorrido')
+                    ->label('Km Percorrido')
+                    ->getStateUsing(function (Locacao $record): int {
+                        
+                        return  ($record->km_retorno - $record->km_saida);
+
+                    }),
                 Tables\Columns\TextColumn::make('qtd_diarias')
                     ->label('Qtd Diárias'),
                 Tables\Columns\TextColumn::make('valor_desconto')
@@ -192,8 +200,8 @@ class LocacaoResource extends Resource
                     })
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->modalHeading('Editar Locação'),
+                Tables\Actions\EditAction::make(),
+                        
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -215,6 +223,8 @@ class LocacaoResource extends Resource
             'edit' => Pages\EditLocacao::route('/{record}/edit'),
         ];
     }   
+
+    // Método para exibir o campo Modelo de placa do veículo
     
     public static function getCleanOptionString(Veiculo $veiculo): string
     {
