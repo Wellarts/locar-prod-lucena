@@ -31,7 +31,7 @@ class Lucratividade extends Page implements HasTable, HasForms
     {
 
 
-                     return Locacao::query();
+                     return Locacao::query()->where('status', 1);
 
     }
 

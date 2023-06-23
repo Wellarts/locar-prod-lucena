@@ -47,6 +47,7 @@ class LocacaoResource extends Resource
                                     ->options(Cliente::all()->pluck('nome', 'id')->toArray()),
                                 Forms\Components\Select::make('veiculo_id')
                                     ->label('Veículo')
+                                    ->preload()
                                     ->required()
                                     ->allowHtml()
                                     ->searchable()

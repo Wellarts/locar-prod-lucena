@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ClienteResource\Pages;
 use App\Filament\Resources\ClienteResource\RelationManagers;
+use App\Forms\Components\CpfCnpj;
 use App\Models\Cliente;
 use App\Models\Estado;
 use Filament\Forms;
@@ -31,16 +32,20 @@ class ClienteResource extends Resource
                 Forms\Components\TextInput::make('nome')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('cpf_cnpj')
+                 CpfCnpj::make('cpf_cnpj')
+                    ->label('CPF/CNPJ')
+                    ->rule('cpf_ou_cnpj')
                     ->label('CPF/CNPJ'),
                 Forms\Components\Textarea::make('endereco')
                     ->label('Endereço'),
                 Forms\Components\Select::make('estado_id')
+                    ->searchable()
                     ->label('Estado')
                     ->required()
                     ->options(Estado::all()->pluck('nome', 'id')->toArray())
                     ->reactive(),
                 Forms\Components\Select::make('cidade_id')
+                    ->searchable()
                     ->label('Cidade')
                     ->required()
                     ->options(function (callable $get) {
@@ -51,12 +56,18 @@ class ClienteResource extends Resource
                         return $estado->cidade->pluck('nome','id');
                     })
                     ->reactive(),
-                Forms\Components\TextInput::make('telefone_1')
-                    ->label('Telefone 1')
+                Forms\Components\TextInput::make('telefone_2')
+                    ->minLength(11)
+                    ->maxLength(11)
+                    ->required()
+                    ->mask(fn (Forms\Components\TextInput\Mask $mask) => $mask->pattern('(00)00000-0000)'))
                     ->tel()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('telefone_2')
-                    ->label('Telefone 2')
+                    ->minLength(11)
+                    ->maxLength(11)
+                    ->required()
+                    ->mask(fn (Forms\Components\TextInput\Mask $mask) => $mask->pattern('(00)00000-0000)'))
                     ->tel()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
