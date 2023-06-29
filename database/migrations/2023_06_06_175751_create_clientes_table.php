@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('validade_cnh');
             $table->string('rg');
             $table->string('exp_rg');
+            $table->foreignId('estado_exp_rg');
             $table->string('img_cnh');
             $table->timestamps();
         });

@@ -56,7 +56,7 @@ class ClienteResource extends Resource
                         return $estado->cidade->pluck('nome','id');
                     })
                     ->reactive(),
-                Forms\Components\TextInput::make('telefone_2')
+                Forms\Components\TextInput::make('telefone_1')
                     ->minLength(11)
                     ->maxLength(11)
                     ->required()
@@ -87,6 +87,10 @@ class ClienteResource extends Resource
                 Forms\Components\TextInput::make('exp_rg')
                     ->label('EXP. RG')
                     ->maxLength(255),
+                Forms\Components\Select::make('estado_exp_rg')
+                    ->searchable()
+                    ->label('UF - Expedidor')
+                    ->options(Estado::all()->pluck('nome', 'id')->toArray()),    
                 FileUpload::make('img_cnh')
                     ->label('Foto CNH'),
                     

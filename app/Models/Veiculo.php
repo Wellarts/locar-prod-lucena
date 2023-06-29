@@ -44,4 +44,9 @@ class Veiculo extends Model
     {
         return $this->hasMany(CustoVeiculo::class);
     }
+
+    public function Temp_lucratividade()
+    {
+        return $this->hasMany(Temp_lucratividade::class);
+    }
 }

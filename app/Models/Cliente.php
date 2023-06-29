@@ -24,6 +24,7 @@ class Cliente extends Model
         'validade_cnh',
         'rg',
         'exp_rg',
+        'estado_exp_rg',
         'img_cnh',
 
 
@@ -42,6 +43,11 @@ class Cliente extends Model
     public function Agendamento()
     {
         return $this->hasMany(Agendamento::class);
+    }
+
+    public function Temp_lucratividade()
+    {
+        return $this->hasMany(Temp_lucratividade::class);
     }
 
     

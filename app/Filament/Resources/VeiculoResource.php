@@ -46,26 +46,26 @@ class VeiculoResource extends Resource
                         Forms\Components\TextInput::make('cor')
                             ->maxLength(255),
                         Forms\Components\TextInput::make('valor_diaria'),
+                        Forms\Components\TextInput::make('km_atual')
+                            ->label('Km Atual'),
                     ]), 
 
                     Fieldset::make('Manutenção')
                     ->schema([
-                        Forms\Components\TextInput::make('km_atual')
-                            ->label('Km Atual'),
                         Forms\Components\TextInput::make('prox_troca_oleo')
                             ->label('Próxima Troca de Óleo - Km'),
-                        Forms\Components\TextInput::make('prox_troca_filtro')
-                            ->label('Próxima Troca do Filtro - Km'),
                         Forms\Components\TextInput::make('aviso_troca_oleo')
                             ->label('Aviso Troca do Óleo - Km'),
+                        Forms\Components\TextInput::make('prox_troca_filtro')
+                            ->label('Próxima Troca do Filtro - Km'),
                         Forms\Components\TextInput::make('aviso_troca_filtro')
                             ->label('Aviso Troca do Filtro - Km'),
                         Forms\Components\TextInput::make('prox_troca_correia')
                             ->label('Próxima Troca da Correia - Km'),
+                        Forms\Components\TextInput::make('aviso_troca_correia')
+                            ->label('Aviso Troca do Correia - Km'),
                         Forms\Components\TextInput::make('prox_troca_pastilha')
                             ->label('Próxima Troca da Pastilha - Km'),
-                        Forms\Components\TextInput::make('aviso_troca_correia')
-                            ->label('Aviso Troca do correia - Km'),
                         Forms\Components\TextInput::make('aviso_troca_pastilha')
                             ->label('Aviso Troca da Pastilha - Km'),
                         Forms\Components\TextInput::make('chassi')
@@ -103,9 +103,37 @@ class VeiculoResource extends Resource
                         ->warning()
                         ->persistent() 
                         ->send();
-                    };
+                        }
 
-                }),
+                        if($record->km_atual >= $record->aviso_troca_filtro){
+                            Notification::make()
+                            ->title('ATENÇÃO: Veículos com troca do filtro próxima')
+                            ->body('Veiculo: '.$record->modelo.' Placa: '.$record->placa) 
+                            ->warning()
+                            ->persistent() 
+                            ->send();
+                        }
+            
+                        if($record->km_atual >= $record->aviso_troca_correia){
+                            Notification::make()
+                            ->title('ATENÇÃO: Veículos com troca da correia próxima')
+                            ->body('Veiculo: '.$record->modelo.' Placa: '.$record->placa) 
+                            ->warning()
+                            ->persistent() 
+                            ->send();
+                        }
+            
+                        if($record->km_atual >= $record->aviso_troca_pastilha){
+                            Notification::make()
+                            ->title('ATENÇÃO: Veículos com troca da pastilha próxima')
+                            ->body('Veiculo: '.$record->modelo.' Placa: '.$record->placa) 
+                            ->warning()
+                            ->persistent() 
+                            ->send();
+                        }
+                    }
+
+                ),
                 Tables\Columns\TextColumn::make('valor_diaria')
                   ->money('BRL'),
                 Tables\Columns\IconColumn::make('status')

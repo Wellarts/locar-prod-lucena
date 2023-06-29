@@ -202,10 +202,14 @@ class LocacaoResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('Imprimir')
+                ->url(fn (Locacao $record): string => route('imprimir', $record))
+                ->openUrlInNewTab(),
                         
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
+                
             ]);
     }
     
