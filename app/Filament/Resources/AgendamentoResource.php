@@ -196,7 +196,10 @@ class AgendamentoResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->modalHeading('Editar Agendamento')
+                    ->modalHeading('Editar Agendamento'),
+                    Tables\Actions\Action::make('Imprimir')
+                        ->url(fn (Agendamento $record): string => route('imprimirAgendamento', $record))
+                        ->openUrlInNewTab(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

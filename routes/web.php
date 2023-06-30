@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Contrato;
+use App\Http\Controllers\FichaAgendamento;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,4 +19,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('pdf/{id}',[Contrato::class, 'print'])->name('imprimir');
+Route::get('pdf/locacao/{id}',[Contrato::class, 'printLocao'])->name('imprimirLocacao');
+Route::get('pdf/agendamento/{id}',[FichaAgendamento::class, 'printAgendamento'])->name('imprimirAgendamento');

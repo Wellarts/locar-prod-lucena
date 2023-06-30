@@ -34,6 +34,11 @@ class Fornecedor extends Model
     {
         return $this->hasMany(CustoVeiculo::class);
     }
+
+    public function ContasPagar()
+    {
+        return $this->hasMany(ContasPagar::class);
+    }
         
     
 

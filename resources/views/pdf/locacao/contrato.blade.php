@@ -90,10 +90,10 @@
     </tr>   
     <tr>
         <td>
-            <b class="tx">Telefones:</b>  {{$locacao->Cliente->telefone_1.' - '.$locacao->Cliente->telefone_2}}       
+            <b class="tx">Telefones:</b>  {{$tel_1.' - '.$tel_2}}          
         </td> 
         <td>
-            <b class="tx">CPF/CNPJ:</b> {{$locacao->Cliente->cpf_cnpj}}       
+            <b class="tx">CPF/CNPJ:</b> {{$cpfCnpj}}        
         </td>       
     </tr>           
 
@@ -132,7 +132,7 @@
 <table class="tabelas">
     <tr>
         <td>
-            <b class="tx">Data da Saída:</b> {{$locacao->data_saida}}   
+            <b class="tx">Data da Saída:</b> {{\Carbon\Carbon::parse($locacao->data_saida)->format('d/m/Y')}}   
         </td> 
         <td>
             <b class="tx">Hora da Saída:</b> {{$locacao->hora_saida}}  
@@ -140,7 +140,7 @@
     </tr>
     <tr>
         <td>
-            <b class="tx">Data do Retorno:</b> {{$locacao->data_retorno}}   
+            <b class="tx">Data do Retorno:</b> {{\Carbon\Carbon::parse($locacao->data_retorno)->format('d/m/Y')}}  
         </td> 
         <td>
             <b class="tx">Hora do Retorno:</b> {{$locacao->data_saida}} 
@@ -297,7 +297,7 @@
         <b>Nome:</b>  {{$locacao->Cliente->nome}}<br>
         <b>Endereço:</b> {{$locacao->Cliente->endereco}}<br>
         <b>Cidade:</b> {{$locacao->Cliente->Cidade->nome}}<br>
-        <b>CPF/CNPJ:</b> {{$locacao->Cliente->cpf_cnpj}} <b>RG:</b> {{$locacao->Cliente->rg}} <b>EXP:</b> {{$locacao->Cliente->exp_rg}}<br><br>
+        <b>CPF/CNPJ:</b> {{$cpfCnpj}} <b>RG:</b> {{$locacao->Cliente->rg}} <b>EXP:</b> {{$locacao->Cliente->exp_rg}}<br><br>
         As partes acima têm entre si justo e contratado a locação de veículo, descrito no ANEXO 1 do presente contrato, nos seguintes
         temos e condições:<br>
         1.1. O veículo alugado, temporariamente, é de propriedade da empresa LOCADORA, encontrando-se em perfeitas condições
