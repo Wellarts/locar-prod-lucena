@@ -15,6 +15,7 @@
         "laravel/tinker": "^2.8",
         "laravellegends/pt-br-validator": "^10.0",
         "nesbot/carbon": "^2.67",
+        "spatie/laravel-permission": "^5.10",
         "stevebauman/purify": "^6.0"
     },
     "require-dev": {
