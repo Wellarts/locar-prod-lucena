@@ -13,6 +13,7 @@ use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Fieldset;
+use Filament\Notifications\Notification;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -43,8 +44,19 @@ class LocacaoResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('cliente_id')
                                     ->label('Cliente')
+                                    ->reactive()
                                     ->required()
-                                    ->options(Cliente::all()->pluck('nome', 'id')->toArray()),
+                                    ->options(Cliente::all()->pluck('nome', 'id')->toArray())
+                                    ->afterStateUpdated(function ($state, callable $set, Closure $get) {
+                                        $cliente = Cliente::find($state);
+                                        Notification::make()
+                                            ->title('ATENÇÃO')
+                                            ->body('A validade da CNH do cliente selecionado: '. Carbon::parse($cliente->validade_cnh)->format('d/m/Y') ) 
+                                            ->warning()
+                                            ->persistent() 
+                                            ->send();
+                                                       
+                                    }),
                                 Forms\Components\Select::make('veiculo_id')
                                     ->label('Veículo')
                                     ->preload()

@@ -19,4 +19,5 @@ class ManageVeiculos extends ManageRecords
                 ->label('Criar Veículo'),
         ];
     }
+
 }

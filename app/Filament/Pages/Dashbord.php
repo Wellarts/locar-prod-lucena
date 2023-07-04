@@ -32,7 +32,7 @@ class Dashbord extends Page
                 Notification::make()
                 ->title('ATENÇÃO: Veículos com troca de óleo próxima')
                 ->body('Veiculo: '.$veiculo->modelo.' Placa: '.$veiculo->placa) 
-                ->warning()
+                ->danger()
                 ->persistent() 
                 ->send();
             }
@@ -41,7 +41,7 @@ class Dashbord extends Page
                 Notification::make()
                 ->title('ATENÇÃO: Veículos com troca do filtro próxima')
                 ->body('Veiculo: '.$veiculo->modelo.' Placa: '.$veiculo->placa) 
-                ->warning()
+                ->danger()
                 ->persistent() 
                 ->send();
             }
@@ -50,7 +50,7 @@ class Dashbord extends Page
                 Notification::make()
                 ->title('ATENÇÃO: Veículos com troca da correia próxima')
                 ->body('Veiculo: '.$veiculo->modelo.' Placa: '.$veiculo->placa) 
-                ->warning()
+                ->danger()
                 ->persistent() 
                 ->send();
             }
@@ -59,7 +59,7 @@ class Dashbord extends Page
                 Notification::make()
                 ->title('ATENÇÃO: Veículos com troca da pastilha próxima')
                 ->body('Veiculo: '.$veiculo->modelo.' Placa: '.$veiculo->placa) 
-                ->warning()
+                ->danger()
                 ->persistent() 
                 ->send();
             }

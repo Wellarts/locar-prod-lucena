@@ -92,7 +92,8 @@ class VeiculoResource extends Resource
                 Tables\Columns\TextColumn::make('placa'),
                 Tables\Columns\TextColumn::make('cor'),
                 Tables\Columns\TextColumn::make('km_atual')
-                ->getStateUsing(function (Veiculo $record): void {
+                 ->label('Km Atual'),
+              /*  ->getStateUsing(function (Veiculo $record): void {
                   
                   //  dd($record->km_atual);
                    
@@ -133,8 +134,9 @@ class VeiculoResource extends Resource
                         }
                     }
 
-                ),
+                ), */
                 Tables\Columns\TextColumn::make('valor_diaria')
+                   ->label('Valor Diária')
                   ->money('BRL'),
                 Tables\Columns\IconColumn::make('status')
                     ->boolean(),
@@ -161,5 +163,7 @@ class VeiculoResource extends Resource
         return [
             'index' => Pages\ManageVeiculos::route('/'),
         ];
-    }    
+    } 
+    
+    
 }

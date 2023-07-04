@@ -50,5 +50,10 @@ class Cliente extends Model
         return $this->hasMany(Temp_lucratividade::class);
     }
 
+    public function ContaReceber() 
+    {
+        return $this->hasMany(ContasReceber::class);
+    }
+
     
 }

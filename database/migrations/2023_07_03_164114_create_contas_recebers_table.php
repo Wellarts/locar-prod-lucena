@@ -11,18 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contas_pagars', function (Blueprint $table) {
+        Schema::create('contas_recebers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('fornecedor_id')->constrained('fornecedors')->restrictOnDelete();
+            $table->foreignId('cliente_id')->constrained('clientes')->restrictOnDelete();
             $table->string('parcelas');
             $table->string('ordem_parcela');
             $table->string('formaPgmto');
             $table->date('data_vencimento');
-            $table->date('data_pagamento');
+            $table->date('data_recebimento');
             $table->boolean('status');
             $table->decimal('valor_total',10,2);
             $table->decimal('valor_parcela',10,2);
-            $table->decimal('valor_pago',10,2);
+            $table->decimal('valor_recebido',10,2);
             $table->longText('obs');
             $table->timestamps();
         });
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contas_pagars');
+        Schema::dropIfExists('contas_recebers');
     }
 };

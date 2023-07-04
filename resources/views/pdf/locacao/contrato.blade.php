@@ -137,13 +137,12 @@
         <td>
             <b class="tx">Hora da Saída:</b> {{$locacao->hora_saida}}  
         </td>       
-    </tr>
-    <tr>
+    
         <td>
             <b class="tx">Data do Retorno:</b> {{\Carbon\Carbon::parse($locacao->data_retorno)->format('d/m/Y')}}  
         </td> 
         <td>
-            <b class="tx">Hora do Retorno:</b> {{$locacao->data_saida}} 
+            <b class="tx">Hora do Retorno:</b> {{$locacao->hora_retorno}} 
         </td>       
     </tr> 
         <td>
@@ -152,15 +151,18 @@
         <td>
             <b class="tx">Qtd de Diárias:</b> {{$locacao->qtd_diarias}}   
         </td>  
-        <td>
+        <td colspan="2">
             <b class="tx">Valor da Diária R$:</b> {{$locacao->Veiculo->valor_diaria}}  
         </td>
     </tr>    
     <tr>    
         <td colspan="2">
-            <b class="tx">Km de Retorno:</b>    
+            <b class="tx">Km de Retorno:</b> {{$locacao->km_retorno}}  
         </td> 
-        <td>
+        <td colspan="2">
+            <b class="tx">Valor do Desconto R$:</b> {{$locacao->valor_desconto}}      
+        </td> 
+        <td colspan="2">
             <b class="tx">Valor Total R$:</b> {{$locacao->valor_total_desconto}}   
         </td>         
     </tr>                        
