@@ -36,6 +36,9 @@ class ClienteResource extends Resource
                     ->label('CPF/CNPJ')
                     ->rule('cpf_ou_cnpj')
                     ->label('CPF/CNPJ'),
+                Forms\Components\DatePicker::make('data_nascimento')
+                    ->displayFormat('d/m/Y')
+                    ->label('Data de Nascimento'),   
                 Forms\Components\Textarea::make('endereco')
                     ->label('Endereço'),
                 Forms\Components\Select::make('estado_id')

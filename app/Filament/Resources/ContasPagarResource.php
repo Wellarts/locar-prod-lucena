@@ -79,9 +79,11 @@ class ContasPagarResource extends Resource
                     ->disabled()
                     ->maxLength(10),
                 Forms\Components\DatePicker::make('data_vencimento')
+                    ->displayFormat('d/m/Y')
                     ->default(now())
                     ->required(),
                 Forms\Components\DatePicker::make('data_pagamento')
+                    ->displayFormat('d/m/Y')
                     ->default(now())
                     ->label("Data do Pagamento"),
                 Forms\Components\Toggle::make('status')

@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('exp_rg');
             $table->foreignId('estado_exp_rg');
             $table->string('img_cnh');
+            $table->string('data_nascimento');
             $table->timestamps();
         });
     }

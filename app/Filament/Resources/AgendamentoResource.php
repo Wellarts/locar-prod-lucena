@@ -66,6 +66,7 @@ class AgendamentoResource extends Resource
                                }),
                               //  ->options(Veiculo::all()->pluck('modelo', 'id')->toArray()),
                             Forms\Components\DatePicker::make('data_saida')
+                                ->displayFormat('d/m/Y')
                                 ->label('Data Saída')
                                 ->reactive()
                                 ->required(),
@@ -73,6 +74,7 @@ class AgendamentoResource extends Resource
                                 ->label('Hora Saída')
                                 ->required(),
                             Forms\Components\DatePicker::make('data_retorno')
+                                ->displayFormat('d/m/Y')
                                 ->label('Data Retorno')
                                 ->reactive()
                                 ->afterStateUpdated(function ($state, callable $set, Closure $get) {

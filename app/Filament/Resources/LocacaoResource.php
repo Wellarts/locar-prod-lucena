@@ -76,12 +76,14 @@ class LocacaoResource extends Resource
                                        return static::getCleanOptionString($veiculo);
                                    }),
                                 Forms\Components\DatePicker::make('data_saida')
+                                    ->displayFormat('d/m/Y')
                                     ->label('Data Saída')
                                     ->required(),
                                 Forms\Components\TimePicker::make('hora_saida')
                                     ->label('Hora Saída')
                                     ->required(),
                                 Forms\Components\DatePicker::make('data_retorno')
+                                    ->displayFormat('d/m/Y')
                                     ->label('Data Retorno')
                                     ->reactive()
                                     ->afterStateUpdated(function ($state, callable $set, Closure $get) {

@@ -79,9 +79,11 @@ class ContasReceberResource extends Resource
                     ->disabled()
                     ->maxLength(10),
                 Forms\Components\DatePicker::make('data_vencimento')
+                    ->displayFormat('d/m/Y')
                     ->default(now())
                     ->required(),
                 Forms\Components\DatePicker::make('data_recebimento')
+                    ->displayFormat('d/m/Y')
                     ->default(now())
                     ->label("Data do Recebimento"),
                 Forms\Components\Toggle::make('status')

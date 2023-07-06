@@ -30,6 +30,7 @@ class Cliente extends Model
         'rg',
         'exp_rg',
         'estado_exp_rg',
+        'data_nascimento',
         'img_cnh',
 
 
