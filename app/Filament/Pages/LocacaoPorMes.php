@@ -28,6 +28,23 @@ class LocacaoPorMes extends Page implements HasTable, HasForms
 
     protected static ?string $title = 'Lucratividade Mensal';
 
+    protected static function shouldRegisterNavigation(): bool
+    {
+        /** @var \App\Models\User */
+        $authUser =  auth()->user();
+
+        if($authUser->hasRole('Administrador'))
+        {
+              return true;
+        }
+        else
+        {
+            return false;
+        }
+
+
+    }
+
 
     public function mount()
     {

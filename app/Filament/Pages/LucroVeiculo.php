@@ -28,6 +28,23 @@ class LucroVeiculo extends Page implements HasForms, HasTable
 
     protected static ?string $navigationGroup = 'Consultas';
 
+    protected static function shouldRegisterNavigation(): bool
+    {
+        /** @var \App\Models\User */
+        $authUser =  auth()->user();
+
+        if($authUser->hasRole('Administrador'))
+        {
+              return true;
+        }
+        else
+        {
+            return false;
+        }
+
+
+    }
+
     
 
     public function mount(): void
