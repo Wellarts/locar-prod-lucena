@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Veiculo extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
    
     protected $fillable = [
         'marca_id',
@@ -48,5 +50,12 @@ class Veiculo extends Model
     public function Temp_lucratividade()
     {
         return $this->hasMany(Temp_lucratividade::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logOnly(['*']);
+        // Chain fluent methods for configuration options
     }
 }

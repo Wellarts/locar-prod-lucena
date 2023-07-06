@@ -53,6 +53,7 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('id'),
                 TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
@@ -77,6 +78,7 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ManageUsers::route('/'),
+            
         ];
     }    
 }
