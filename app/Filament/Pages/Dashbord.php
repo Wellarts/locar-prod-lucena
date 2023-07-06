@@ -17,6 +17,23 @@ class Dashbord extends Page
 
     protected static string $view = 'filament.pages.dashbord';
 
+    protected static function shouldRegisterNavigation(): bool
+    {
+        /** @var \App\Models\User */
+        $authUser =  auth()->user();
+
+        if($authUser->hasRole('Administrador'))
+        {
+              return true;
+        }
+        else
+        {
+            return false;
+        }
+
+
+    }
+
    
 
     public function mount(): void 
