@@ -104,8 +104,11 @@ class ClienteResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nome'),
+                Tables\Columns\TextColumn::make('nome')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('cpf_cnpj')
+                    ->searchable()
                     ->label('CPF/CNPJ'),
                 Tables\Columns\TextColumn::make('endereco')
                     ->label('Endereço'),
@@ -113,10 +116,6 @@ class ClienteResource extends Resource
                     ->label('Cidade'),
                 Tables\Columns\TextColumn::make('estado.nome')
                     ->label('Estado'),
-                Tables\Columns\TextColumn::make('telefone_1')
-                    ->label('Telefone 1'),
-                Tables\Columns\TextColumn::make('telefone_2')
-                    ->label('Telefone 2'),
                 Tables\Columns\TextColumn::make('email'),
                 Tables\Columns\TextColumn::make('rede_social')
                     ->label('Rede Social'),

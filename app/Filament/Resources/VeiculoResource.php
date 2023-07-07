@@ -86,10 +86,13 @@ class VeiculoResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('modelo'),
+                Tables\Columns\TextColumn::make('modelo')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('marca.nome'),
                 Tables\Columns\TextColumn::make('ano'),
-                Tables\Columns\TextColumn::make('placa'),
+                Tables\Columns\TextColumn::make('placa')
+                     ->searchable(),
                 Tables\Columns\TextColumn::make('cor'),
                 Tables\Columns\TextColumn::make('km_atual')
                  ->label('Km Atual'),
@@ -139,6 +142,7 @@ class VeiculoResource extends Resource
                    ->label('Valor Diária')
                   ->money('BRL'),
                 Tables\Columns\IconColumn::make('status')
+                    ->sortable()
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
