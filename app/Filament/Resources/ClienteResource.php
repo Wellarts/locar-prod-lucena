@@ -33,7 +33,6 @@ class ClienteResource extends Resource
                     ->required()
                     ->maxLength(255),
                  CpfCnpj::make('cpf_cnpj')
-                    ->label('CPF/CNPJ')
                     ->rule('cpf_ou_cnpj')
                     ->label('CPF/CNPJ'),
                 Forms\Components\DatePicker::make('data_nascimento')
