@@ -1,5 +1,5 @@
 <?php
-
+// testes
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ClienteResource\Pages;
@@ -35,7 +35,7 @@ class ClienteResource extends Resource
                  CpfCnpj::make('cpf_cnpj')
                     ->rule('cpf_ou_cnpj')
                     ->label('CPF/CNPJ'),
-                Forms\Components\DatePicker::make('data_nascimento2')
+                Forms\Components\DatePicker::make('data_nascimento')
                     ->displayFormat('d/m/Y')
                     ->label('Data de Nascimento2'),
                 Forms\Components\Textarea::make('endereco')
