@@ -37,7 +37,7 @@ class ClienteResource extends Resource
                     ->label('CPF/CNPJ'),
                 Forms\Components\DatePicker::make('data_nascimento')
                     ->displayFormat('d/m/Y')
-                    ->label('Data de Nascimento'),   
+                    ->label('Data de Nascimento2'),
                 Forms\Components\Textarea::make('endereco')
                     ->label('Endereço'),
                 Forms\Components\Select::make('estado_id')
@@ -92,10 +92,10 @@ class ClienteResource extends Resource
                 Forms\Components\Select::make('estado_exp_rg')
                     ->searchable()
                     ->label('UF - Expedidor')
-                    ->options(Estado::all()->pluck('nome', 'id')->toArray()),    
+                    ->options(Estado::all()->pluck('nome', 'id')->toArray()),
                 FileUpload::make('img_cnh')
                     ->label('Foto CNH'),
-                    
+
             ]);
     }
 
@@ -139,18 +139,18 @@ class ClienteResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->modalHeading('Editar Cliente'),
-                    
+
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ManageClientes::route('/'),
         ];
-    }    
+    }
 }
